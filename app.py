@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from pytube import YouTube, exceptions
+from pytube import YouTube
 import os
 import subprocess
 import re
@@ -20,12 +20,7 @@ def descargar():
     
     try:
         yt = YouTube(url)
-    except exceptions.PytubeError as e:
-        return render_template('result.html', error="Error al procesar la URL de YouTube: " + str(e))
-    except Exception as e:
-        return render_template('result.html', error="Error inesperado: " + str(e))
-    
-    try:
+        
         # Especificar la carpeta de destino
         download_path = os.path.join(os.path.expanduser('~'), 'Downloads')
         
@@ -73,7 +68,7 @@ def descargar():
             
             # Usar ffmpeg para combinar los streams de video y audio
             ffmpeg_command = [
-                'ffmpeg', '-i', video_file, '-i', audio_file, '-c:v', 'copy', '-c:a', 'aac', '-strict', 'experimental', output_path
+                '/app/bin/ffmpeg', '-i', video_file, '-i', audio_file, '-c:v', 'copy', '-c:a', 'aac', '-strict', 'experimental', output_path
             ]
             
             # Ejecutar el comando ffmpeg y capturar la salida en bytes
