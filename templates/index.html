@@ -1,28 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Descargar Video de YouTube</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Descargar Videos de YouTube</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <div class="card">
-            <h1>Descargar Video de YouTube</h1>
-            <form action="/Downloads" method="post">
-                <label for="url">URL del Video de YouTube:</label>
-                <input type="text" id="url" name="url" required>
-                
-                <label for="format">Formato de descarga:</label>
-                <select id="format" name="format" required>
-                    <option value="video">Solo Video</option>
-                    <option value="audio">Solo Audio</option>
-                    <option value="both">Video y Audio</option>
+        <h1 class="mt-5">Descargar Videos de YouTube</h1>
+        <form action="/Downloads" method="post" class="mt-4">
+            <div class="form-group">
+                <label for="url">URL del video:</label>
+                <input type="text" id="url" name="url" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="format">Formato:</label>
+                <select id="format" name="format" class="form-control">
+                    <option value="video">Video</option>
+                    <option value="audio">Audio</option>
+                    <option value="both">Ambos</option>
                 </select>
-                
-                <button type="submit">Descargar</button>
-            </form>
-        </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Descargar</button>
+        </form>
     </div>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
