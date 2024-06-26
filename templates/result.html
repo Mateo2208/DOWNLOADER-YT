@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado de la Descarga</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            {% if error %}
+                <h1>Ha ocurrido un error</h1>
+                <p>{{ error }}</p>
+            {% else %}
+                <h1>Video descargado</h1>
+                <p>Video descargado: <strong>{{ title }}</strong> en <code>{{ download_path }}</code></p>
+            {% endif %}
+            <a href="/" class="button">Volver a la página principal</a>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

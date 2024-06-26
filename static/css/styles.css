@@ -1,0 +1,104 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #ff0000, #000000);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.card {
+    background: rgba(255, 0, 0, 0.9);
+    padding: 50px 70px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 450px;
+    width: 100%;
+    border: 3px solid #ff0000;
+}
+
+h1 {
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #fff;
+    border-bottom: 2px solid #ff0000;
+    padding-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 18px;
+    color: #ddd;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 25px;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #222;
+    color: #fff;
+}
+
+button {
+    padding: 14px 22px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e60000;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.5);
+}
+
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 18px;
+    color: #ddd;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 25px;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #222;
+    color: #fff;
+}
+
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}

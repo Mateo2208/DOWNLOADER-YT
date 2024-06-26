@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Descargar Video de YouTube</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Descargar Video de YouTube</h1>
+            <form action="/Downloads" method="post">
+                <label for="url">URL del Video de YouTube:</label>
+                <input type="text" id="url" name="url" required>
+                
+                <label for="format">Formato de descarga:</label>
+                <select id="format" name="format" required>
+                    <option value="video">Solo Video</option>
+                    <option value="audio">Solo Audio</option>
+                    <option value="both">Video y Audio</option>
+                </select>
+                
+                <button type="submit">Descargar</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
