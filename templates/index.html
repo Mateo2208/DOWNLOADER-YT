@@ -1,32 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Descargar Videos de YouTube</title>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Descargar Video de YouTube</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">Descargar Videos de YouTube</h1>
-        <form action="/Downloads" method="post" class="mt-4">
-            <div class="form-group">
-                <label for="url">URL del video:</label>
-                <input type="text" id="url" name="url" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="format">Formato:</label>
-                <select id="format" name="format" class="form-control">
-                    <option value="video">Video</option>
-                    <option value="audio">Audio</option>
-                    <option value="both">Ambos</option>
+        <div class="card">
+            <h1>Descargar Video de YouTube</h1>
+            <form action="/Downloads" method="post">
+                <label for="url">URL del Video de YouTube:</label>
+                <input type="text" id="url" name="url" required>
+                
+                <label for="format">Formato de descarga:</label>
+                <select id="format" name="format" required>
+                    <option value="video">Solo Video</option>
+                    <option value="audio">Solo Audio</option>
+                    <option value="both">Video y Audio</option>
                 </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Descargar</button>
-        </form>
+                
+                <button type="submit">Descargar</button>
+            </form>
+        </div>
     </div>
-    <!-- Custom JS -->
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>
