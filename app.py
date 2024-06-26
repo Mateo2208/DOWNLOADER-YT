@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template, send_from_directory
 from pytube import YouTube
 import os
-import subprocess
 import re
+from moviepy.editor import VideoFileClip, AudioFileClip
 
 app = Flask(__name__)
 app.config['DOWNLOAD_FOLDER'] = 'downloads'
@@ -69,24 +69,15 @@ def descargar():
             output_filename = clean_filename(yt.title) + ".mp4"
             output_path = os.path.join(download_path, output_filename)
             
-            # Usar ffmpeg para combinar los streams de video y audio
-            ffmpeg_command = [
-                'ffmpeg', '-i', video_file, '-i', audio_file, '-c:v', 'copy', '-c:a', 'aac', '-strict', 'experimental', output_path
-            ]
-            
-            # Ejecutar el comando ffmpeg y capturar la salida en bytes
-            result = subprocess.run(ffmpeg_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            
-            # Decodificar la salida
-            stdout = result.stdout.decode('utf-8', errors='replace')
-            stderr = result.stderr.decode('utf-8', errors='replace')
-            
-            # Verificar si ffmpeg tuvo éxito
-            if result.returncode != 0:
-                error_message = f"ffmpeg error: {stderr}"
-                return f'Ha ocurrido un error: {error_message}'
+            # Usar MoviePy para combinar los streams de video y audio
+            video_clip = VideoFileClip(video_file)
+            audio_clip = AudioFileClip(audio_file)
+            final_clip = video_clip.set_audio(audio_clip)
+            final_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
             
             # Eliminar los archivos temporales
+            video_clip.close()
+            audio_clip.close()
             os.remove(video_file)
             os.remove(audio_file)
             filename = os.path.basename(output_path)
