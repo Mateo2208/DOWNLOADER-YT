@@ -1,10 +1,11 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_from_directory
 from pytube import YouTube
 import os
 import subprocess
 import re
 
 app = Flask(__name__)
+app.config['DOWNLOAD_FOLDER'] = 'downloads'
 
 def clean_filename(filename):
     return re.sub(r'[\\/*?:"<>|]', "", filename)
@@ -22,7 +23,7 @@ def descargar():
         yt = YouTube(url)
         
         # Especificar la carpeta de destino
-        download_path = os.path.join(os.path.expanduser('~'), 'Downloads')
+        download_path = app.config['DOWNLOAD_FOLDER']
         
         # Crear la carpeta si no existe
         if not os.path.exists(download_path):
@@ -34,8 +35,9 @@ def descargar():
             
             # Descargar el video
             video_file = video_stream.download(output_path=download_path)
+            filename = os.path.basename(video_file)
             
-            return render_template('result.html', title=yt.title, download_path=video_file)
+            return render_template('result.html', title=yt.title, download_path=filename)
         
         elif download_format == 'audio':
             # Obtener el stream de audio de mayor calidad
@@ -48,8 +50,9 @@ def descargar():
             base, ext = os.path.splitext(audio_file)
             new_file = base + '.mp3'
             os.rename(audio_file, new_file)
+            filename = os.path.basename(new_file)
             
-            return render_template('result.html', title=yt.title, download_path=new_file)
+            return render_template('result.html', title=yt.title, download_path=filename)
         
         elif download_format == 'both':
             # Obtener el stream de video de mayor resolución
@@ -68,7 +71,7 @@ def descargar():
             
             # Usar ffmpeg para combinar los streams de video y audio
             ffmpeg_command = [
-                '/app/bin/ffmpeg', '-i', video_file, '-i', audio_file, '-c:v', 'copy', '-c:a', 'aac', '-strict', 'experimental', output_path
+                'ffmpeg', '-i', video_file, '-i', audio_file, '-c:v', 'copy', '-c:a', 'aac', '-strict', 'experimental', output_path
             ]
             
             # Ejecutar el comando ffmpeg y capturar la salida en bytes
@@ -86,11 +89,16 @@ def descargar():
             # Eliminar los archivos temporales
             os.remove(video_file)
             os.remove(audio_file)
+            filename = os.path.basename(output_path)
             
-            return render_template('result.html', title=yt.title, download_path=output_path)
+            return render_template('result.html', title=yt.title, download_path=filename)
         
     except Exception as e:
         return render_template('result.html', error=str(e))
+
+@app.route('/downloads/<path:filename>')
+def download_file(filename):
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename, as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
