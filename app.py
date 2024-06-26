@@ -2,7 +2,11 @@ from flask import Flask, request, render_template, send_from_directory
 from pytube import YouTube
 import os
 import re
+import logging
 from moviepy.editor import VideoFileClip, AudioFileClip
+
+# Configurar logging
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 app.config['DOWNLOAD_FOLDER'] = 'downloads'
@@ -30,6 +34,7 @@ def descargar():
             os.makedirs(download_path)
         
         if download_format == 'video':
+            logging.info("Descargando video...")
             # Obtener el stream de video de mayor resolución
             video_stream = yt.streams.filter(progressive=False, file_extension='mp4').order_by('resolution').desc().first()
             
@@ -37,9 +42,11 @@ def descargar():
             video_file = video_stream.download(output_path=download_path)
             filename = os.path.basename(video_file)
             
+            logging.info(f"Video descargado: {filename}")
             return render_template('result.html', title=yt.title, download_path=filename)
         
         elif download_format == 'audio':
+            logging.info("Descargando audio...")
             # Obtener el stream de audio de mayor calidad
             audio_stream = yt.streams.filter(only_audio=True).order_by('abr').desc().first()
             
@@ -52,9 +59,11 @@ def descargar():
             os.rename(audio_file, new_file)
             filename = os.path.basename(new_file)
             
+            logging.info(f"Audio descargado: {filename}")
             return render_template('result.html', title=yt.title, download_path=filename)
         
         elif download_format == 'both':
+            logging.info("Descargando video y audio...")
             # Obtener el stream de video de mayor resolución
             video_stream = yt.streams.filter(progressive=False, file_extension='mp4').order_by('resolution').desc().first()
             
@@ -65,6 +74,7 @@ def descargar():
             video_file = video_stream.download(output_path=download_path, filename='video.mp4')
             audio_file = audio_stream.download(output_path=download_path, filename='audio.mp4')
             
+            logging.info("Combinando video y audio con MoviePy...")
             # Limpiar el nombre del archivo de salida
             output_filename = clean_filename(yt.title) + ".mp4"
             output_path = os.path.join(download_path, output_filename)
@@ -82,9 +92,11 @@ def descargar():
             os.remove(audio_file)
             filename = os.path.basename(output_path)
             
+            logging.info(f"Video y audio combinados: {filename}")
             return render_template('result.html', title=yt.title, download_path=filename)
         
     except Exception as e:
+        logging.error(f"Error durante la descarga o procesamiento: {str(e)}", exc_info=True)
         return render_template('result.html', error=str(e))
 
 @app.route('/downloads/<path:filename>')
